@@ -1,15 +1,367 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>Fun Times Homepage</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fun Times Everyday Paperland</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-    body {
-        margin: 4;
-        font-family: times new roman;
-        background: #4d8318;
-        overflow-x: hidden;
-    }
-<h1>Welcome to our website, Fun Times Everyday</h1>
+  :root {
+    --yellow: #FFD95A;
+    --pink: #FF6B9D;
+    --teal: #00C9A7;
+    --purple: #A855F7;
+    --orange: #FF8C42;
+    --bg: #FFFBF0;
+    --card-bg: #FFFFFF;
+    --text: #1a1a2e;
+    --muted: #6b7280;
+    --radius: 20px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
 
-<h2>Here is what we sell</h2>
+  nav {
+    background: var(--card-bg);
+    border-bottom: 3px solid var(--yellow);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo { font-family: 'Fredoka One', cursive; font-size: 20px; color: var(--pink); line-height: 1.2; }
+  .logo span { color: var(--teal); }
+  .nav-links { display: flex; gap: 24px; list-style: none; }
+  .nav-links a { text-decoration: none; font-weight: 700; color: var(--text); font-size: 14px; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--pink); }
+  .cart-btn {
+    background: var(--yellow); border: none; border-radius: 50px;
+    padding: 8px 18px; font-family: 'Nunito', sans-serif; font-weight: 700;
+    font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: transform 0.15s;
+  }
+  .cart-btn:hover { transform: scale(1.05); }
+  .cart-count {
+    background: var(--pink); color: white; border-radius: 50%;
+    width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 11px;
+  }
+
+  .hero { padding: 60px 24px 40px; text-align: center; position: relative; overflow: hidden; }
+  .deco { position: absolute; font-size: 80px; opacity: 0.07; pointer-events: none; }
+  .hero h1 { font-family: 'Fredoka One', cursive; font-size: clamp(36px, 6vw, 64px); line-height: 1.1; margin-bottom: 16px; }
+  .hero h1 .l1 { color: var(--pink); }
+  .hero h1 .l2 { color: var(--teal); }
+  .hero h1 .l3 { color: var(--purple); }
+  .hero p { font-size: 16px; color: var(--muted); max-width: 480px; margin: 0 auto 28px; line-height: 1.6; }
+  .hero-badges { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 36px; }
+  .badge { padding: 6px 14px; border-radius: 50px; font-size: 13px; font-weight: 700; }
+  .b-yellow { background: var(--yellow); color: #7a5c00; }
+  .b-pink { background: #FFE4EF; color: #c0396b; }
+  .b-teal { background: #CCFFF5; color: #006b59; }
+  .hero-btn {
+    background: var(--pink); color: white; border: none; border-radius: 50px;
+    padding: 14px 36px; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 16px;
+    cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; box-shadow: 0 4px 0 #c0396b;
+  }
+  .hero-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #c0396b; }
+  .hero-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #c0396b; }
+
+  .handmade-banner {
+    background: var(--yellow); border-radius: var(--radius); padding: 24px 28px;
+    display: flex; align-items: center; gap: 16px;
+    max-width: 1100px; margin: 0 auto 40px; width: calc(100% - 48px);
+  }
+  .hm-icon { font-size: 44px; }
+  .hm-text h3 { font-family: 'Fredoka One', cursive; font-size: 18px; margin-bottom: 4px; }
+  .hm-text p { font-size: 13px; color: #7a5c00; }
+
+  section { padding: 32px 24px; max-width: 1100px; margin: 0 auto; }
+  .sec-title { font-family: 'Fredoka One', cursive; font-size: 26px; margin-bottom: 4px; }
+  .sec-sub { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
+
+  .cat-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+  .cat-tab {
+    padding: 7px 18px; border-radius: 50px; border: 2px solid #e5e7eb;
+    background: white; font-family: 'Nunito', sans-serif; font-weight: 700;
+    font-size: 13px; cursor: pointer; transition: all 0.15s; color: var(--muted);
+  }
+  .cat-tab.active, .cat-tab:hover { border-color: var(--pink); background: #FFE4EF; color: #c0396b; }
+
+  .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 18px; }
+  .product-card {
+    background: var(--card-bg); border-radius: var(--radius); border: 2px solid #f0f0f0;
+    overflow: hidden; transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .product-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); border-color: var(--yellow); }
+  .product-img { height: 150px; display: flex; align-items: center; justify-content: center; font-size: 60px; position: relative; }
+  .bg-teal { background: #CCFFF5; }
+  .bg-pink { background: #FFE4EF; }
+  .bg-yellow { background: #FFF5CC; }
+  .bg-purple { background: #F3E8FF; }
+  .bg-orange { background: #FFE8D6; }
+  .new-badge {
+    position: absolute; top: 10px; right: 10px; background: var(--pink);
+    color: white; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 50px;
+  }
+  .product-info { padding: 14px; }
+  .product-cat { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 4px; }
+  .product-name { font-weight: 700; font-size: 13px; line-height: 1.4; margin-bottom: 10px; }
+  .product-footer { display: flex; align-items: center; justify-content: space-between; }
+  .product-price { font-family: 'Fredoka One', cursive; font-size: 20px; color: var(--teal); }
+  .add-btn {
+    background: var(--yellow); border: none; border-radius: 50px;
+    width: 32px; height: 32px; font-size: 20px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.15s; font-weight: 700; color: #7a5c00;
+  }
+  .add-btn:hover { transform: scale(1.15); background: var(--pink); color: white; }
+
+  .cart-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; }
+  .cart-overlay.open { display: block; }
+  .cart-panel {
+    position: fixed; right: 0; top: 0; bottom: 0; width: min(380px, 100vw);
+    background: var(--card-bg); z-index: 201; padding: 24px; overflow-y: auto;
+    transform: translateX(100%); transition: transform 0.3s ease;
+    display: flex; flex-direction: column;
+  }
+  .cart-panel.open { transform: translateX(0); }
+  .cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+  .cart-header h2 { font-family: 'Fredoka One', cursive; font-size: 22px; color: var(--pink); }
+  .close-btn { background: #f0f0f0; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 16px; cursor: pointer; }
+  .cart-items { flex: 1; }
+  .cart-item { display: flex; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
+  .ci-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+  .ci-info { flex: 1; }
+  .ci-name { font-weight: 700; font-size: 13px; }
+  .ci-price { font-size: 13px; color: var(--teal); font-weight: 700; }
+  .qty-controls { display: flex; align-items: center; gap: 8px; }
+  .qty-btn { background: #f0f0f0; border: none; border-radius: 50%; width: 26px; height: 26px; font-size: 14px; cursor: pointer; font-weight: 700; }
+  .qty-btn:hover { background: var(--yellow); }
+  .qty-num { font-weight: 700; font-size: 14px; min-width: 16px; text-align: center; }
+  .cart-empty { text-align: center; padding: 40px 0; color: var(--muted); font-size: 14px; }
+  .cart-empty-icon { font-size: 48px; margin-bottom: 12px; }
+  .cart-footer { margin-top: 24px; }
+  .cart-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-size: 16px; font-weight: 700; }
+  .cart-total-amount { font-family: 'Fredoka One', cursive; font-size: 24px; color: var(--teal); }
+  .checkout-btn {
+    width: 100%; background: var(--pink); color: white; border: none;
+    border-radius: 50px; padding: 14px; font-family: 'Nunito', sans-serif;
+    font-weight: 700; font-size: 16px; cursor: pointer; box-shadow: 0 4px 0 #c0396b;
+  }
+  .checkout-btn:hover { opacity: 0.9; }
+  .checkout-btn:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
+  .ship-note { text-align: center; font-size: 12px; color: var(--muted); margin-top: 10px; }
+
+  footer { background: var(--text); color: white; padding: 32px 24px; text-align: center; margin-top: 40px; }
+  .foot-logo { font-family: 'Fredoka One', cursive; font-size: 22px; color: var(--yellow); margin-bottom: 8px; }
+  footer p { font-size: 13px; color: #9ca3af; line-height: 1.8; }
+
+  .toast {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--text); color: white; padding: 12px 24px;
+    border-radius: 50px; font-size: 14px; font-weight: 700;
+    z-index: 300; transition: transform 0.3s ease; white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+    .handmade-banner { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Fun Times<br><span>Everyday Paperland</span></div>
+  <ul class="nav-links">
+    <li><a href="#shop">Shop</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+  <button class="cart-btn" onclick="toggleCart()">
+    🛒 Cart <span class="cart-count" id="cart-count">0</span>
+  </button>
+</nav>
+
+<div class="hero">
+  <div class="deco" style="top:10px;left:5%">📄</div>
+  <div class="deco" style="top:20px;right:8%">✂️</div>
+  <div class="deco" style="bottom:20px;left:10%">🌟</div>
+  <div class="deco" style="bottom:10px;right:5%">🎨</div>
+  <h1>
+    <div class="l1">Fun Times</div>
+    <div class="l2">Everyday</div>
+    <div class="l3">Paperland ✨</div>
+  </h1>
+  <p>Handmade paper craft kits for curious little hands. Fold, create, and play — one sheet at a time!</p>
+  <div class="hero-badges">
+    <span class="badge b-yellow">✋ All handmade</span>
+    <span class="badge b-pink">🚀 Ships in 2–3 days</span>
+    <span class="badge b-teal">🌱 Eco-friendly paper</span>
+  </div>
+  <button class="hero-btn" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">Shop Now →</button>
+</div>
+
+<div class="handmade-banner">
+  <div class="hm-icon">🤲</div>
+  <div class="hm-text">
+    <h3>Every kit is handmade with love</h3>
+    <p>Each product is carefully crafted by hand. Please allow 2–3 days for your order to be prepared before shipping.</p>
+  </div>
+</div>
+
+<section id="shop">
+  <div class="sec-title">🛍️ Our kits</div>
+  <div class="sec-sub">8 amazing paper craft kits to spark creativity</div>
+  <div class="cat-tabs">
+    <button class="cat-tab active" onclick="filterCat('all',this)">All items</button>
+    <button class="cat-tab" onclick="filterCat('origami',this)">Origami kits</button>
+    <button class="cat-tab" onclick="filterCat('diy',this)">DIY craft</button>
+    <button class="cat-tab" onclick="filterCat('fun',this)">Fun & games</button>
+  </div>
+  <div class="product-grid" id="product-grid"></div>
+</section>
+
+<section id="about">
+  <div class="sec-title">💛 About us</div>
+  <div class="sec-sub">A little paper, a lot of imagination</div>
+  <p style="font-size:15px;color:var(--muted);line-height:1.8;max-width:600px;">
+    Fun Times Everyday Paperland is a small handmade brand creating paper craft kits for kids. Every single item is made by hand with care. We believe in the joy of making things yourself — no screens needed, just paper, creativity, and fun!
+  </p>
+</section>
+
+<footer>
+  <div class="foot-logo">Fun Times Everyday Paperland</div>
+  <p>Handmade paper kits for creative kids 📄✨<br>All products made with love · Ships across India</p>
+</footer>
+
+<div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+<div class="cart-panel" id="cart-panel">
+  <div class="cart-header">
+    <h2>🛒 Your cart</h2>
+    <button class="close-btn" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cart-items"></div>
+  <div class="cart-footer">
+    <div class="cart-total">
+      <span>Total</span>
+      <span class="cart-total-amount" id="cart-total">₹0</span>
+    </div>
+    <button class="checkout-btn" id="checkout-btn" onclick="checkout()" disabled>Proceed to pay →</button>
+    <p class="ship-note">+ ₹40–60 shipping calculated at checkout</p>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const products = [
+  {id:1,name:"DIY paper plushie kit",price:45,cat:"diy",img:"images/plushie-kit.jpg",bg:"bg-pink"},
+  {id:2,name:"Origami jumping frog, cat & swan kit",price:50,cat:"origami",img:"images/origami-animals.jpg",bg:"bg-teal"},
+  {id:3,name:"Paper blind bag",price:75,cat:"fun",img:"images/blind-bag.jpg",bg:"bg-yellow"},
+  {id:4,name:"Custom flag making kit",price:35,cat:"diy",img:"images/flag-kit.jpg",bg:"bg-purple"},
+  {id:5,name:"2 paper shurikens",price:50,cat:"fun",img:"images/shurikens.jpg",bg:"bg-orange"},
+  {id:6,name:"10 origami items DIY megakit",price:100,cat:"origami",img:"images/megakit.jpg",bg:"bg-teal"},
+  {id:7,name:"4 paper springs (attachable)",price:50,cat:"fun",img:"images/springs.jpg",bg:"bg-pink"},
+  {id:8,name:"Paper fan & origami colour picker DIY kit",price:60,cat:"origami",img:"images/fan-picker.jpg",bg:"bg-yellow"}
+];
+
+let cart = {};
+
+function catLabel(c) {
+  return c==='origami'?'Origami kit':c==='diy'?'DIY craft':'Fun & games';
+}
+
+function renderProducts(filter='all') {
+  const grid = document.getElementById('product-grid');
+  const list = filter==='all' ? products : products.filter(p=>p.cat===filter);
+  grid.innerHTML = list.map(p=>`
+    <div class="product-card">
+      <div class="product-img ${p.bg}">
+        <span>${p.icon}</span>
+        <span class="new-badge">New</span>
+      </div>
+      <div class="product-info">
+        <div class="product-cat">${catLabel(p.cat)}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-footer">
+          <div class="product-price">₹${p.price}</div>
+          <button class="add-btn" onclick="addToCart(${p.id})">+</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterCat(cat, btn) {
+  document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  renderProducts(cat);
+}
+
+function addToCart(id) {
+  cart[id] = (cart[id]||0) + 1;
+  updateCartUI();
+  const p = products.find(p=>p.id===id);
+  showToast(`${p.icon} Added to cart!`);
+}
+
+function removeFromCart(id) {
+  if(cart[id]>1) cart[id]--;
+  else delete cart[id];
+  updateCartUI();
+}
+
+function updateCartUI() {
+  const count = Object.values(cart).reduce((a,b)=>a+b,0);
+  document.getElementById('cart-count').textContent = count;
+  const total = Object.entries(cart).reduce((sum,[id,qty])=>sum+products.find(p=>p.id==id).price*qty,0);
+  document.getElementById('cart-total').textContent = `₹${total}`;
+  document.getElementById('checkout-btn').disabled = count===0;
+  const el = document.getElementById('cart-items');
+  if(count===0){
+    el.innerHTML=`<div class="cart-empty"><div class="cart-empty-icon">🛒</div><p>Your cart is empty!<br>Add some paper magic.</p></div>`;
+    return;
+  }
+  el.innerHTML = Object.entries(cart).map(([id,qty])=>{
+    const p = products.find(p=>p.id==id);
+    return `<div class="cart-item">
+      <div class="ci-icon ${p.bg}">${p.icon}</div>
+      <div class="ci-info">
+        <div class="ci-name">${p.name}</div>
+        <div class="ci-price">₹${p.price*qty}</div>
+      </div>
+      <div class="qty-controls">
+        <button class="qty-btn" onclick="removeFromCart(${p.id})">−</button>
+        <span class="qty-num">${qty}</span>
+        <button class="qty-btn" onclick="addToCart(${p.id})">+</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleCart() {
+  document.getElementById('cart-overlay').classList.toggle('open');
+  document.getElementById('cart-panel').classList.toggle('open');
+}
+
+function checkout() {
+  showToast('🚀 Connecting to Razorpay...');
+  setTimeout(()=>alert('Add your Razorpay API key here to enable payments!'),1000);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+renderProducts();
+updateCartUI();
+</script>
+</body>
+</html>
